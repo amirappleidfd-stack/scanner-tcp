@@ -1,33 +1,38 @@
 name: Android APK Build
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup JDK 17
+      - name: Setup JDK
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Setup Gradle
+      - name: Install Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: false
 
-      - name: Build Release APK
+      - name: Fix Gradle Wrapper
         run: |
+          rm -rf gradle/wrapper
+          gradle wrapper --gradle-version 8.10.2
           chmod +x gradlew
+
+      - name: Build APK
+        run: |
           ./gradlew :app:assembleRelease
 
       - name: Upload APK
