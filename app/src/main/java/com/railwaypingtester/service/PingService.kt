@@ -22,46 +22,79 @@ class PingService : android.app.Service() {
         return null
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): android.os.IBinder? {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int
+    ): Int {
+
         val notification = createNotification("Ping scan in progress...")
-        startForeground(NOTIFICATION_ID, notification)
-        return null
+
+        startForeground(
+            NOTIFICATION_ID,
+            notification
+        )
+
+        return START_STICKY
     }
 
     private fun createNotification(title: String): android.app.Notification {
-        val intent = Intent(this, com.railwaypingtester.ui.screens.MainActivity::class.java)
-            .apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
+
+        val intent = Intent(
+            this,
+            com.railwaypingtester.ui.screens.MainActivity::class.java
+        ).apply {
+            flags =
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
 
         val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent, PendingIntent.FLAG_IMMUTABLE
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
         )
 
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE)
+                    as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
             val channel = NotificationChannel(
-                CHANNEL_ID, "Ping Service",
+                CHANNEL_ID,
+                "Ping Service",
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
                 description = "Background ping scanning service"
             }
+
             notificationManager.createNotificationChannel(channel)
         }
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        return NotificationCompat.Builder(
+            this,
+            CHANNEL_ID
+        )
             .setContentTitle(title)
-            .setContentText("Railway ping scanning in progress")
+            .setContentText(
+                "Railway ping scanning in progress"
+            )
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setPriority(
+                NotificationCompat.PRIORITY_LOW
+            )
             .build()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        notificationManager.cancel(NOTIFICATION_ID)
+
+        if (::notificationManager.isInitialized) {
+            notificationManager.cancel(NOTIFICATION_ID)
+        }
     }
 }
