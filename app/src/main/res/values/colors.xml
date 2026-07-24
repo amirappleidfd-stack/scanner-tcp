@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_background">#FF0D1117</color>
+    <color name="dark_surface">#FF161B22</color>
+    <color name="dark_card">#FF1C2333</color>
+    <color name="dark_text_primary">#FFE6EDF3</color>
+    <color name="green_online">#FF238636</color>
+    <color name="red_offline">#FFF85149</color>
+    <color name="blue_accent">#FF58A6FF</color>
+</resources>
