@@ -465,4 +465,3 @@ private fun ContactRow(
         }
     }
 }
-

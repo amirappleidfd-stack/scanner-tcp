@@ -468,115 +468,59 @@ fun ExportDialog(
         onDismissRequest = onDismiss,
         containerColor = DarkSurface,
         shape = RoundedCornerShape(20.dp),
-
         title = {
             Text(
-                text = "Export Results",
+                "Export Results",
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
                 color = DarkTextPrimary,
                 fontFamily = FontFamily.Monospace
             )
         },
-
         text = {
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(max = 400.dp)
             ) {
-
-
                 BasicTextField(
                     value = text,
                     onValueChange = {},
-                    readOnly = true,
-
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 200.dp, max = 350.dp)
                         .padding(12.dp)
-                        .background(
-                            DarkBackground,
-                            RoundedCornerShape(12.dp)
-                        ),
-
+                        .background(DarkBackground, RoundedCornerShape(12.dp)),
+                    readOnly = true,
                     textStyle = TextStyle(
                         fontSize = 12.sp,
                         fontFamily = FontFamily.Monospace,
                         color = DarkTextPrimary
                     )
                 )
-
-
-                Spacer(
-                    modifier = Modifier.height(8.dp)
-                )
-
-
+                Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-
-
-                    TextButton(
-                        onClick = {
-
-                            val clipboard =
-                                context.getSystemService(
-                                    Context.CLIPBOARD_SERVICE
-                                ) as ClipboardManager
-
-
-                            clipboard.setPrimaryClip(
-                                ClipData.newPlainText(
-                                    "Ping Results",
-                                    text
-                                )
-                            )
-
-
-                            copied = true
-                        }
-                    ) {
-
+                    TextButton(onClick = {
+                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setPrimaryClip(ClipData.newPlainText("Ping Results", text))
+                        copied = true
+                    }) {
                         Text(
-                            text =
-                                if (copied)
-                                    "Copied!"
-                                else
-                                    "Copy to Clipboard",
-
-                            color =
-                                if (copied)
-                                    GreenOnline
-                                else
-                                    BlueAccent,
-
+                            if (copied) "Copied!" else "Copy to Clipboard",
+                            color = if (copied) GreenOnline else BlueAccent,
                             fontFamily = FontFamily.Monospace
                         )
                     }
                 }
             }
         },
-
-
         confirmButton = {},
-
-
         dismissButton = {
-
-            TextButton(
-                onClick = onDismiss
-            ) {
-
-                Text(
-                    "Close",
-                    color = DarkTextSecondary,
-                    fontFamily = FontFamily.Monospace
-                )
+            TextButton(onClick = onDismiss) {
+                Text("Close", color = DarkTextSecondary, fontFamily = FontFamily.Monospace)
             }
         }
     )
